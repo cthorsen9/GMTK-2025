@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class WheelController : MonoBehaviour
 {
+    public static WheelController singleton;
+
     WheelCollider wCol;
 
     [SerializeField]
@@ -55,7 +57,7 @@ public class WheelController : MonoBehaviour
     float additionalZLean = 0f;
 
     //jump settings-----------------------------------------------
-    Rigidbody rigid;
+    public Rigidbody rigid;
     
     //for coyote time
     bool canJump = false;
@@ -132,8 +134,15 @@ public class WheelController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //anim = GetComponentInChildren<Animator>();  
-        wCol = GetComponent<WheelCollider>();
+        if(singleton != null && singleton != this.gameObject)
+        {
+            Destroy(singleton.gameObject);
+        }
+        else if(singleton == null) singleton = this;
+
+
+            //anim = GetComponentInChildren<Animator>();  
+            wCol = GetComponent<WheelCollider>();
         //wheelMesh = transform.GetChild(0);
         rigid = GetComponentInParent<Rigidbody>();  
         startAngle = wheelMesh.localEulerAngles;
