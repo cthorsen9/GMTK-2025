@@ -13,7 +13,7 @@ public class killFloor : MonoBehaviour
 
         if (other.gameObject.CompareTag("Player"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            GameManager.singleton.ReturnToCheckPoint();
         }
     }
 }

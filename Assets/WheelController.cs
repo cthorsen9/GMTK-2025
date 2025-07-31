@@ -112,6 +112,8 @@ public class WheelController : MonoBehaviour
 
     }
 
+    
+
     public void JumpInput(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -130,7 +132,12 @@ public class WheelController : MonoBehaviour
         }
     }
 
+    public void PauseInput(InputAction.CallbackContext context)
+    {
+        if(context.started) GameManager.singleton.PauseUnpause();
 
+
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

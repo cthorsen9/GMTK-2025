@@ -11,6 +11,11 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
 
+    
+    public ghostTracker ghostTracker_;
+
+    public GhostMovement ghost;
+
     Vector3 startPos;
 
     Quaternion startRot;
@@ -27,11 +32,15 @@ public class GameManager : MonoBehaviour
 
     Transform checkpoint;
 
+    bool paused = false;
+
+    [HideInInspector]
+    public cameraIntro intro;
 
     //timer stuf--------------------
-    bool timePlayer = false;
+    public bool timePlayer = false;
 
-    float timer;
+    public float timer;
 
     public float countdownTime = 3;
 
@@ -42,6 +51,8 @@ public class GameManager : MonoBehaviour
     public bool playerFinsihed = false;
 
     string stTime;
+
+    public float levelBest;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,9 +67,13 @@ public class GameManager : MonoBehaviour
 
         startPos = player.transform.position;
 
-        startRot = player.transform.rotation;       
-        
-        LevelCountdown();
+        startRot = player.transform.rotation;
+
+        intro = GetComponent<cameraIntro>();
+
+        levelBest = PlayerPrefs.GetFloat(SceneManager.GetActiveScene().name);
+
+        SetupLevel();
 
     }
 
@@ -76,6 +91,7 @@ public class GameManager : MonoBehaviour
     {
         if (SceneInfoHolder.singleton.playedIntro)//just start the level
         {
+            intro.FixCamera();
             LevelCountdown();
 
         }
@@ -94,11 +110,12 @@ public class GameManager : MonoBehaviour
     {
         SceneInfoHolder.singleton.playedIntro = true;
 
-
+        intro.Startintro();
     }
 
+
     //counts down player start and frees them, unlocking rigid and giving control
-    void LevelCountdown()
+    public void LevelCountdown()
     {
         playerFinsihed = false;
         StartCoroutine(CountDown());
@@ -128,7 +145,10 @@ public class GameManager : MonoBehaviour
     void StartTimer()
     {
         timer = 0f;
-        timePlayer = true;
+        timePlayer = true; 
+        
+        ghostTracker_.StartTracking();
+        ghost.StartGhost();
     }
 
     void UpdateTimer()
@@ -201,5 +221,23 @@ public class GameManager : MonoBehaviour
     public void ToMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+
+    public void PauseUnpause()
+    {
+        if (paused)
+        {
+            paused = false;
+            Time.timeScale = 1;
+            pauseUI.SetActive(false);
+        }
+        else
+        {
+            paused = true;
+            Time.timeScale = 0;
+            pauseUI.SetActive(true);
+
+        }
     }
 }

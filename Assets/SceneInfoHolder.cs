@@ -1,27 +1,33 @@
 using UnityEngine;
 
+
+
+//this exists as our gamemanager destroys on load as each has local level vars, so this holds data between runs
 public class SceneInfoHolder : MonoBehaviour
 {
     public static SceneInfoHolder singleton;
 
     public bool playedIntro =  false;
 
+
+
     //public GameObject PauseMenu
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        if (singleton != null && singleton != this.gameObject)
+        if (singleton == null)
         {
-            Destroy(singleton.gameObject);
+            // First instance - become the singleton
+            singleton = this;
+            DontDestroyOnLoad(gameObject);
         }
-        else if (singleton == null) singleton = this;
+        else if (singleton != this)
+        {
+            // Subsequent instance - destroy yourself
+            Destroy(gameObject);
+            return; // Important to prevent further execution
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
