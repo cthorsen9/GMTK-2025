@@ -4,10 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class killFloor : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+    
+
+    private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Collsiion enterd to rest Scen");
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }

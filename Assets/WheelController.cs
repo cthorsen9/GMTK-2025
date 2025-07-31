@@ -9,6 +9,9 @@ public class WheelController : MonoBehaviour
     [SerializeField]
     Animator anim;
 
+    [SerializeField]
+    float rotModifier = .1f;
+
     Vector2 input;
 
     [SerializeField]
@@ -20,14 +23,52 @@ public class WheelController : MonoBehaviour
     [SerializeField]    
     Transform wheelMesh;
 
+    
+
     Vector3 startAngle;
 
-    [Header("Jump variables")]
+    [Header("Lean Settings")]
+    [SerializeField] 
+    Transform leanParent; // Assign the bike/vehicle body in Inspector
 
+    [SerializeField]
+    Transform slopeParent;
+
+    [SerializeField] 
+    float maxLeanAngle = 15f;
+
+    [SerializeField] 
+    float leanSpeed = 5f;
+
+    [SerializeField] 
+    float leanResetSpeed = 3f;
+
+    [SerializeField] 
+    float minSpeedForLean = 2f; // Avoid lean when almost stopped
+
+    [SerializeField]
+    LayerMask mask;
+
+    //for matching slope
+    RaycastHit hit;
+
+    float additionalZLean = 0f;
+
+    //jump settings-----------------------------------------------
     Rigidbody rigid;
     
     //for coyote time
     bool canJump = false;
+
+    [Header("Slope Matching")]
+    [SerializeField] 
+    float slopeMatchSpeed = 5f;  // How quickly to align with slopes
+
+    [SerializeField] 
+    float maxSlopeAngle = 45f;  // Maximum slope angle to attempt matching
+
+
+    [Header("Jump variables")]
 
     //how long to charge our jump
     [SerializeField]
@@ -98,6 +139,14 @@ public class WheelController : MonoBehaviour
         startAngle = wheelMesh.localEulerAngles;
     }
 
+
+    private void FixedUpdate()
+    {
+        Physics.Raycast(transform.position, -transform.up, out hit, 1.5f, mask);
+
+        
+        
+    }
     // Update is called once per frame
     void Update()
     {
@@ -107,6 +156,9 @@ public class WheelController : MonoBehaviour
 
         MeshUpdater();
 
+        UpdateLean();
+
+        UpdateSlopeMatching();
 
         groundedLastFrame = wCol.isGrounded;
     }
@@ -115,7 +167,8 @@ public class WheelController : MonoBehaviour
     //add some lean to the mesh when turning (sligth z rot) ------------------
     void WheelMover()
     {
-        wCol.motorTorque = input.y * forwardForce;
+        
+        if(wCol.isGrounded) wCol.motorTorque = input.y * forwardForce;
         wCol.steerAngle += input.x * turnAmount * Time.deltaTime;
         
     }
@@ -136,9 +189,67 @@ public class WheelController : MonoBehaviour
         }
     }
 
+   
+
     void MeshUpdater()
     {
-        wheelMesh.localEulerAngles = startAngle + wCol.steerAngle * Vector3.up + wCol.rotationSpeed * Time.time * Vector3.right;
+        wheelMesh.localEulerAngles = startAngle + wCol.steerAngle * Vector3.up + wCol.rotationSpeed * Time.time * rotModifier * Vector3.right;
+    }
+
+    void UpdateLean()
+    {
+        if (!leanParent) return;
+
+        float currentSpeed = Mathf.Abs(wCol.rpm * wCol.radius);
+        float targetLeanZ = 0f;
+
+        // Only lean if moving and turning
+        if (currentSpeed > minSpeedForLean && Mathf.Abs(input.x) > 0.1f)
+        {
+            targetLeanZ = -input.x * maxLeanAngle; // Negative for natural tilt
+        }
+
+        // Smoothly interpolate the parent's Z rotation
+        Quaternion currentRot = leanParent.localRotation;
+        Quaternion targetRot = Quaternion.Euler(
+            currentRot.eulerAngles.x,
+            currentRot.eulerAngles.y,
+            targetLeanZ
+        );
+
+        leanParent.localRotation = Quaternion.Slerp(
+            currentRot,
+            targetRot,
+            (targetLeanZ == 0f ? leanResetSpeed : leanSpeed) * Time.deltaTime
+        );
+    }
+
+    void UpdateSlopeMatching()
+    {
+        if (!slopeParent || hit.collider == null) return;
+
+        // Only match slopes within reasonable angles
+        if (Vector3.Angle(Vector3.up, hit.normal) <= maxSlopeAngle)
+        {
+            // Calculate target rotation based on normal
+            Quaternion targetRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+
+            // Smoothly interpolate to match the slope
+            slopeParent.rotation = Quaternion.Slerp(
+                slopeParent.rotation,
+                targetRotation,
+                slopeMatchSpeed * Time.deltaTime
+            );
+        }
+        else
+        {
+            // Smoothly return to upright position if slope is too steep
+            slopeParent.rotation = Quaternion.Slerp(
+                slopeParent.rotation,
+                Quaternion.identity,
+                slopeMatchSpeed * Time.deltaTime
+            );
+        }
     }
     IEnumerator CoyoteTimer()
     {
