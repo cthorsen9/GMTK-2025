@@ -6,7 +6,9 @@ public class WheelController : MonoBehaviour
 {
     public static WheelController singleton;
 
-    WheelCollider wCol;
+    public Transform trackTarget;
+
+    public WheelCollider wCol;
 
     [SerializeField]
     Animator anim;
@@ -30,8 +32,7 @@ public class WheelController : MonoBehaviour
     Vector3 startAngle;
 
     [Header("Lean Settings")]
-    [SerializeField] 
-    Transform leanParent; // Assign the bike/vehicle body in Inspector
+    public Transform leanParent; // Assign the bike/vehicle body in Inspector
 
     [SerializeField]
     Transform slopeParent;

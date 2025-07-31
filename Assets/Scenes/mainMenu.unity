@@ -5859,6 +5859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d14a53ea2701574b91e2d6448a7ac40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trackTarget: {fileID: 0}
   anim: {fileID: 453218819}
   rotModifier: 0.1
   forwardForce: 60
@@ -5873,6 +5874,7 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 55
+  rigid: {fileID: 0}
   slopeMatchSpeed: 5
   maxSlopeAngle: 45
   TimeForMaxPower: 2
@@ -7144,31 +7146,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99418451728e96244b3cc79f33849e18, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.17670119
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99418451728e96244b3cc79f33849e18, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.12990883
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99418451728e96244b3cc79f33849e18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.97563237
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99418451728e96244b3cc79f33849e18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.006481032
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99418451728e96244b3cc79f33849e18, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -3.357
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99418451728e96244b3cc79f33849e18, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 200.102
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99418451728e96244b3cc79f33849e18, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 374.574
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 99418451728e96244b3cc79f33849e18, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

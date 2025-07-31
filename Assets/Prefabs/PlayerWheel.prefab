@@ -5343,6 +5343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d14a53ea2701574b91e2d6448a7ac40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trackTarget: {fileID: 1134706500638022986}
   anim: {fileID: 3508933533055181788}
   rotModifier: 0.1
   forwardForce: 60
@@ -5357,6 +5358,7 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 55
+  rigid: {fileID: 0}
   slopeMatchSpeed: 5
   maxSlopeAngle: 45
   TimeForMaxPower: 2
@@ -5398,6 +5400,7 @@ Transform:
   - {fileID: 5659160145109526482}
   - {fileID: 3183308517870921450}
   - {fileID: 7647547768893057028}
+  - {fileID: 1134706500638022986}
   m_Father: {fileID: 344483992345647970}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3508933533055181788
@@ -5503,6 +5506,37 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 2
+--- !u!1 &6954111827185963679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1134706500638022986}
+  m_Layer: 8
+  m_Name: FollowTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1134706500638022986
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6954111827185963679}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9038869378405486088}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &9086829682669398080
 PrefabInstance:
   m_ObjectHideFlags: 0
