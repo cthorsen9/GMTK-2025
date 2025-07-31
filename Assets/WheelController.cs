@@ -17,7 +17,8 @@ public class WheelController : MonoBehaviour
     [SerializeField]
     float turnAmount = .5f;
 
-    Transform child;
+    [SerializeField]    
+    Transform wheelMesh;
 
     Vector3 startAngle;
 
@@ -90,11 +91,11 @@ public class WheelController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        anim = GetComponentInChildren<Animator>();  
+        //anim = GetComponentInChildren<Animator>();  
         wCol = GetComponent<WheelCollider>();
-        child = transform.GetChild(0);
+        //wheelMesh = transform.GetChild(0);
         rigid = GetComponentInParent<Rigidbody>();  
-        startAngle = child.localEulerAngles;
+        startAngle = wheelMesh.localEulerAngles;
     }
 
     // Update is called once per frame
@@ -104,6 +105,7 @@ public class WheelController : MonoBehaviour
 
         WheelMover();
 
+        MeshUpdater();
 
 
         groundedLastFrame = wCol.isGrounded;
@@ -115,7 +117,7 @@ public class WheelController : MonoBehaviour
     {
         wCol.motorTorque = input.y * forwardForce;
         wCol.steerAngle += input.x * turnAmount * Time.deltaTime;
-        child.localEulerAngles = startAngle + wCol.steerAngle * Vector3.up;
+        
     }
 
     //compares grounded data to tell us when to jump
@@ -133,6 +135,11 @@ public class WheelController : MonoBehaviour
             coyoteTimer_ = StartCoroutine(CoyoteTimer());
         }
     }
+
+    void MeshUpdater()
+    {
+        wheelMesh.localEulerAngles = startAngle + wCol.steerAngle * Vector3.up + wCol.rotationSpeed * Time.time * Vector3.right;
+    }
     IEnumerator CoyoteTimer()
     {
         canJump = true;
@@ -143,6 +150,8 @@ public class WheelController : MonoBehaviour
     IEnumerator EarlyJumpTimer()
     {
         yield return new WaitForSeconds(earlyJumpForgivenessTime);
+        anim.SetTrigger("endJump");
+
     }
 
     //I AM SO FUCKING SMARRTTTTT RAHHHHH
