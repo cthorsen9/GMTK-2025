@@ -11,7 +11,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
 
-    
+    public string leaderBoardId = "LevelTimeLeaderBoards";
+
+    public  string username = "testUser";
+
     public ghostTracker ghostTracker_;
 
     public GhostMovement ghost;
@@ -243,5 +246,11 @@ public class GameManager : MonoBehaviour
             pauseUI.SetActive(true);
 
         }
+    }
+
+    public void UseOnlineGhost()
+    {
+        var flipGhost = PlayerPrefs.GetInt("onlineGhost") == 0 ? 1 : 0;
+        PlayerPrefs.SetInt("onlineGhost", flipGhost);
     }
 }

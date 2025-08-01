@@ -9,6 +9,8 @@ using System.IO;
 public class ghostTracker : MonoBehaviour
 {
 
+    bool onlineGhost = true;
+
     // Wrapper class for JSON serialization of Vector3 list
     [System.Serializable]
     private class PositionData
@@ -30,6 +32,7 @@ public class ghostTracker : MonoBehaviour
     private void Start()
     {
         Debug.Log(PlayerPrefs.GetFloat(SceneManager.GetActiveScene().name));
+        
     }
 
     public void StartTracking()
@@ -67,6 +70,7 @@ public class ghostTracker : MonoBehaviour
     //thanks jason
     void SaveToJSON()
     {
+
         PositionData data = new PositionData();
         data.positions = posList;
 
@@ -80,5 +84,10 @@ public class ghostTracker : MonoBehaviour
         PlayerPrefs.SetString(SceneManager.GetActiveScene().name + "json", jsonData);
 
         PlayerPrefs.Save();
+        onlineGhost = PlayerPrefs.GetInt("onlineGhost") == 0 ? false : true;
+        if (onlineGhost)
+        {
+            LeaderboardsSample.singleton.AddScoreWithMetadata(GameManager.singleton.leaderBoardId, SceneManager.GetActiveScene().name, GameManager.singleton.username, jsonData, GameManager.singleton.timer);
+        }
     }
 }
