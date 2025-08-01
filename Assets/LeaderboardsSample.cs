@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Leaderboards;
@@ -17,11 +18,14 @@ public class LeaderboardsSample : MonoBehaviour
 
    public static LeaderboardsSample singleton;
 
-    static BuildCompression builder;
+   // static BuildCompression builder;
 
     public string lastScoreRequest;
 
     public float lastScoreTime = -100f;
+
+    //public TMP_Text debugText;
+
 
     //once signed in
     public bool wereIn = false;
@@ -55,10 +59,12 @@ public class LeaderboardsSample : MonoBehaviour
             {
                 wereIn = true;
                 Debug.Log("Signed in as: " + AuthenticationService.Instance.PlayerId);
+                //debugText.text = AuthenticationService.Instance.PlayerId;
             };
             AuthenticationService.Instance.SignInFailed += s =>
             {
                 // Take some action here...
+                //debugText.text = "couldnt log in?";
                 Debug.Log(s);
             };
 
@@ -117,6 +123,8 @@ public class LeaderboardsSample : MonoBehaviour
                 Metadata = scoreMetadata // Pass the pre-serialized JSON string
             }
         );
+        //debugText.text = JsonConvert.SerializeObject(playerEntry);
+
         Debug.Log(JsonConvert.SerializeObject(playerEntry));
     }
 
