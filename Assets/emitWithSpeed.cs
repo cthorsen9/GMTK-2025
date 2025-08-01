@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class emitWithSpeed : MonoBehaviour
 {
@@ -23,11 +25,22 @@ public class emitWithSpeed : MonoBehaviour
     [SerializeField]
     WheelCollider wCol;
 
+
+    [SerializeField]
+    Volume pp;
+
+    ChromaticAberration chrom;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         part = GetComponent<ParticleSystem>();
+
+        pp.profile.TryGet<ChromaticAberration>(out chrom);
+
         StartCoroutine(FakeUpdate());
+
+        
     }
 
 
@@ -51,7 +64,8 @@ public class emitWithSpeed : MonoBehaviour
 
                 emission.rateOverTime = Mathf.Lerp(0f, topEmit, velMag);
             }
-                
+
+            chrom.intensity.Override(velMag);
 
 
             yield return new WaitForSeconds(loopFreq);

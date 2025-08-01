@@ -2413,6 +2413,7 @@ MonoBehaviour:
   countdownTime: 3
   countdown: {fileID: 600205100}
   timerText: {fileID: 462358171}
+  recordText: {fileID: 1896586012}
   playerFinsihed: 0
   levelBest: 0
 --- !u!4 &1329573944
@@ -3017,6 +3018,17 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d14a53ea2701574b91e2d6448a7ac40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1896586012 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8035999648503445104, guid: cb6b4d5f5e7e8c84b9735f195705b8eb, type: 3}
+  m_PrefabInstance: {fileID: 6006983108758018545}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1940953175
@@ -3737,6 +3749,10 @@ PrefabInstance:
       propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3249054306596378789, guid: b7f9cd28239a7ae4a9f2755a3c4f523e, type: 3}
+      propertyPath: pp
+      value: 
+      objectReference: {fileID: 832575518}
     - target: {fileID: 6447319936994717383, guid: b7f9cd28239a7ae4a9f2755a3c4f523e, type: 3}
       propertyPath: m_Name
       value: PlayerWheel
@@ -4053,46 +4069,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1329573943}
-    - target: {fileID: 5875330696524144512, guid: cb6b4d5f5e7e8c84b9735f195705b8eb, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7919269652238673507, guid: cb6b4d5f5e7e8c84b9735f195705b8eb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1329573943}
-    - target: {fileID: 8540201964383650255, guid: cb6b4d5f5e7e8c84b9735f195705b8eb, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8540201964383650255, guid: cb6b4d5f5e7e8c84b9735f195705b8eb, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8540201964383650255, guid: cb6b4d5f5e7e8c84b9735f195705b8eb, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8540201964383650255, guid: cb6b4d5f5e7e8c84b9735f195705b8eb, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8958939837042803258, guid: cb6b4d5f5e7e8c84b9735f195705b8eb, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8958939837042803258, guid: cb6b4d5f5e7e8c84b9735f195705b8eb, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8958939837042803258, guid: cb6b4d5f5e7e8c84b9735f195705b8eb, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8958939837042803258, guid: cb6b4d5f5e7e8c84b9735f195705b8eb, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

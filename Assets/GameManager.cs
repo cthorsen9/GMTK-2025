@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
 
     public TMP_Text timerText;
 
+    public TMP_Text recordText;
+
     public bool playerFinsihed = false;
 
     string stTime;
@@ -72,6 +74,8 @@ public class GameManager : MonoBehaviour
         intro = GetComponent<cameraIntro>();
 
         levelBest = PlayerPrefs.GetFloat(SceneManager.GetActiveScene().name);
+
+        if (levelBest > 0) recordText.text = "record: " + ((int)levelBest / 60).ToString("00") + ":" + (levelBest % 60).ToString("00.00");
 
         SetupLevel();
 
