@@ -81,7 +81,7 @@ public class GhostMovement : MonoBehaviour
             float distance = Vector3.Distance(ghostPosData[indexer], ghostPosData[indexer + 1]);
 
             // Speed = Distance / Time (to cover the distance in 0.2 seconds)
-            float speed = distance / 0.05f;
+            float speed = distance / 0.1f;
 
             // Move towards the next point at the calculated speed
             transform.position = Vector3.MoveTowards(

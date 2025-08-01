@@ -28,6 +28,9 @@ public class SceneInfoHolder : MonoBehaviour
             Destroy(gameObject);
             return; // Important to prevent further execution
         }
+
+        PlayerPrefs.SetInt("onlineGhost", 1);
+
     }
 
 }

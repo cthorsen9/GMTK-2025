@@ -1,8 +1,12 @@
-using UnityEngine;
-using Unity.Cinemachine;
-using UnityEngine.SceneManagement;
 using System.Collections;
 using TMPro;
+using Unity.Cinemachine;
+using Unity.Services.Authentication;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using System;
+using System.Text;
+using System.Threading.Tasks;
 
 
 public class GameManager : MonoBehaviour
@@ -11,7 +15,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
 
-    public string leaderBoardId = "LevelTimeLeaderBoards";
+    [HideInInspector]
+    public string leaderBoardId;
 
     public  string username = "testUser";
 
@@ -59,8 +64,12 @@ public class GameManager : MonoBehaviour
 
     public float levelBest;
 
+    bool awaitingLogin = true;
+
+    bool awaitingWR = true;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         //DontDestroyOnLoad(gameObject);
 
@@ -70,6 +79,8 @@ public class GameManager : MonoBehaviour
         }
         else if (singleton == null) singleton = this;
 
+        leaderBoardId = SceneManager.GetActiveScene().name;
+
         startPos = player.transform.position;
 
         startRot = player.transform.rotation;
@@ -78,7 +89,8 @@ public class GameManager : MonoBehaviour
 
         levelBest = PlayerPrefs.GetFloat(SceneManager.GetActiveScene().name);
 
-        if (levelBest > 0) recordText.text = "record: " + ((int)levelBest / 60).ToString("00") + ":" + (levelBest % 60).ToString("00.00");
+        
+
 
         SetupLevel();
 
@@ -89,9 +101,31 @@ public class GameManager : MonoBehaviour
     {
         
         if(timePlayer) UpdateTimer();
-        
+
+        if (awaitingWR)
+        {
+            if(LeaderboardsSample.singleton.wereIn)
+            {
+                awaitingWR = false;
+                LeaderboardsSample.singleton.GetScores(leaderBoardId);
+                awaitingLogin = true;
+            }
+        }
+
+        if (awaitingLogin)
+        {
+            if (Time.time - LeaderboardsSample.singleton.lastScoreTime < .5f)
+            {
+                awaitingLogin = false;
+                if (levelBest > 0) recordText.text = "world record: " + LeaderboardsSample.singleton.lastScoreRequest + "personal best: " + ((int)levelBest / 60).ToString("00") + ":" + (levelBest % 60).ToString("00.00");
+                else recordText.text = "world record: " + LeaderboardsSample.singleton.lastScoreRequest;
+
+            }
+        }
 
     }
+
+    
 
     //gets player start and positions them
     void SetupLevel()

@@ -347,8 +347,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c45a93e0e73b2848bff6eac84bcbe75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useBestGhostData: 1
-  captureEveryXseconds: 0.05
+  useBestGhostData: 0
+  captureEveryXseconds: 0.1
 --- !u!1001 &297212202
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1793,6 +1793,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1287743544}
+  leaderBoardId: LevelTimeLeaderBoards
+  username: testUser
   ghostTracker_: {fileID: 250741631}
   ghost: {fileID: 220894884}
   controller: {fileID: 1855049334}
@@ -2512,12 +2514,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1946045460}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.37100002, y: 1.19, z: 0.63699996}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2127465059}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1946045462
 MonoBehaviour:
@@ -2531,6 +2533,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 379de050a45b37342b1c85dce3ef40da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastScoreRequest: 
+  lastScoreTime: -100
+  wereIn: 0
 --- !u!1 &2022292019
 GameObject:
   m_ObjectHideFlags: 0
@@ -2976,7 +2981,6 @@ Transform:
   - {fileID: 2022292022}
   - {fileID: 220894883}
   - {fileID: 216229312}
-  - {fileID: 1946045461}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4236520507503060690
@@ -3520,6 +3524,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 222384964}
+  - {fileID: 1946045461}
   - {fileID: 2127465059}
   - {fileID: 988610377}
   - {fileID: 1845856685}

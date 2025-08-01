@@ -116,6 +116,8 @@ public class WheelController : MonoBehaviour
 
     public void JumpInput(InputAction.CallbackContext context)
     {
+        if (!GameManager.singleton.timePlayer) return;
+
         if (context.started)
         {
             jumpStartTime = Time.time;

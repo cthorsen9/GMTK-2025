@@ -1,5 +1,8 @@
+using MoreMountains.Tools;
 using Newtonsoft.Json;
 using System;
+using System.Text;
+using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Leaderboards;
@@ -12,11 +15,18 @@ public class LeaderboardsSample : MonoBehaviour
 
    public static LeaderboardsSample singleton;
 
+    static BuildCompression builder;
+
+    public string lastScoreRequest;
+
+    public float lastScoreTime = -100f;
+
+    //once signed in
+    public bool wereIn = false;
+
+
     private async void Awake()
     {
-        await UnityServices.InitializeAsync();
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
         if (singleton == null)
         {
             // First instance - become the singleton
@@ -30,20 +40,44 @@ public class LeaderboardsSample : MonoBehaviour
             return; // Important to prevent further execution
         }
 
+        await UnityServices.InitializeAsync();
+        await SignInAnonymously();
+
+       
+
     }
 
-    [Serializable]
+        async Task SignInAnonymously()
+        {
+            AuthenticationService.Instance.SignedIn += () =>
+            {
+                wereIn = true;
+                Debug.Log("Signed in as: " + AuthenticationService.Instance.PlayerId);
+            };
+            AuthenticationService.Instance.SignInFailed += s =>
+            {
+                // Take some action here...
+                Debug.Log(s);
+            };
+
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
+
+
+        [Serializable]
     public class ScoreMetadata
     {
 
-        public string jsonGhostData;
-        public string level;
+        //public string jsonGhostData;
         public string username;
     }
 
-    public async void AddScoreWithMetadata(string leaderboardId, string level, string user, string jsonData, float  time)
+    public async void AddScoreWithMetadata(string leaderboardId, string user, string jsonData, float  time)
     {
-        var scoreMetadata = new ScoreMetadata { jsonGhostData = jsonData, level = SceneManager.GetActiveScene().name, username = user };
+
+        int utf16ByteCount = Encoding.Unicode.GetByteCount(jsonData);
+        Debug.Log(utf16ByteCount);
+        var scoreMetadata = new ScoreMetadata { /*jsonGhostData = jsonData,*/ level = SceneManager.GetActiveScene().name, username = user };
         var playerEntry = await LeaderboardsService.Instance
             .AddPlayerScoreAsync(
                 leaderboardId,
@@ -58,7 +92,9 @@ public class LeaderboardsSample : MonoBehaviour
     {
         var scoresResponse = await LeaderboardsService.Instance
             .GetScoresAsync(leaderboardId);
-        Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+        //Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+        lastScoreRequest = JsonConvert.SerializeObject(scoresResponse);
+        lastScoreTime = Time.time;
     }
 
 }
