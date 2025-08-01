@@ -2729,6 +2729,7 @@ public class StringChecker : MonoBehaviour
 
     public bool CheckString(string str)
     {
+        str = str.ToLower();
         foreach(string check in list)
         {
             if (check.Contains(str)) return false;

@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using NaughtyAttributes;
 
 
 public class GameManager : MonoBehaviour
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public string leaderBoardId;
 
-    public  string username = "testUser";
+    //public  string username = "testUser";
 
     public ghostTracker ghostTracker_;
 
@@ -35,6 +36,10 @@ public class GameManager : MonoBehaviour
     public CinemachineInputAxisController cineCont;
 
     public GameObject winUi;
+
+    public GameObject loseUI;
+
+    public TMP_Text lostByText;
 
     public GameObject pauseUI;
 
@@ -68,6 +73,15 @@ public class GameManager : MonoBehaviour
 
     bool awaitingWR = true;
 
+
+
+    //------------------
+    public TMP_Text speedText;
+    float prevFrameVelMag = 0f;
+    public Animator velAnims;
+
+    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
@@ -89,7 +103,7 @@ public class GameManager : MonoBehaviour
 
         levelBest = PlayerPrefs.GetFloat(SceneManager.GetActiveScene().name);
 
-        
+        cineCont.enabled = false;
 
 
         SetupLevel();
@@ -117,14 +131,35 @@ public class GameManager : MonoBehaviour
             if (Time.time - LeaderboardsSample.singleton.lastScoreTime < .5f)
             {
                 awaitingLogin = false;
-                if (levelBest > 0) recordText.text = "world record: " + LeaderboardsSample.singleton.lastScoreRequest + "personal best: " + ((int)levelBest / 60).ToString("00") + ":" + (levelBest % 60).ToString("00.00");
-                else recordText.text = "world record: " + LeaderboardsSample.singleton.lastScoreRequest;
+                Debug.Log(LeaderboardsSample.singleton.lastScoreRequest);
+                if (levelBest > 0) recordText.text = "world record: " + LeaderboardsSample.singleton.TopPlayerUserAndSpeed() + "\npersonal best: " + ((int)levelBest / 60).ToString("00") + ":" + (levelBest % 60).ToString("00.00");
+                else recordText.text = "world record: " + LeaderboardsSample.singleton.TopPlayerUserAndSpeed();
 
             }
         }
 
+        
+
     }
 
+    private void FixedUpdate()
+    {
+        if (timePlayer) speedText.text = pRigid.linearVelocity.magnitude.ToString("000.0");
+
+        if ((int)pRigid.linearVelocity.magnitude - (int)prevFrameVelMag >= 1) velAnims.SetTrigger("velUp");
+
+        prevFrameVelMag = pRigid.linearVelocity.magnitude;
+
+        
+    }
+
+
+    [Button]
+    public void ResetPB()
+    {
+        PlayerPrefs.SetFloat(SceneManager.GetActiveScene().name, 0);
+        PlayerPrefs.Save();
+    }
     
 
     //gets player start and positions them
@@ -242,14 +277,25 @@ public class GameManager : MonoBehaviour
 
         cineCont.enabled = false;
 
-        
+        Debug.Log(levelBest + " <level best, time to beat> " + SceneInfoHolder.singleton.TimeToBeat);
 
-        winUi.SetActive(true);
+        if (levelBest == 0 || timer < levelBest) levelBest = timer;
+
+        if (levelBest < SceneInfoHolder.singleton.TimeToBeat) winUi.SetActive(true);
+        else
+        {
+            lostByText.text = "required time: " + SceneInfoHolder.singleton.TimeToBeat + " seconds" + "\ndiff: " + (SceneInfoHolder.singleton.TimeToBeat - timer).ToString("0.00");
+
+            loseUI.SetActive(true);
+
+        }
     }
 
 
     public void NextLevel()
     {
+        Destroy(SceneInfoHolder.singleton.gameObject);
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex +1);
 
     }

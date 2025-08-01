@@ -9,7 +9,7 @@ public class SceneInfoHolder : MonoBehaviour
 
     public bool playedIntro =  false;
 
-
+    public float TimeToBeat = 24f;
 
     //public GameObject PauseMenu
 

@@ -49,7 +49,7 @@ public class ghostTracker : MonoBehaviour
             Debug.Log("Tracking data");
 
             
-            posList.Add(new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z));
+           // posList.Add(new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z));
 
             posList.Add(transform.position);
             yield return new WaitForSeconds(captureEveryXseconds);
@@ -91,7 +91,7 @@ public class ghostTracker : MonoBehaviour
         onlineGhost = PlayerPrefs.GetInt("onlineGhost") == 0 ? false : true;
         if (onlineGhost)
         {
-            LeaderboardsSample.singleton.AddScoreWithMetadata(GameManager.singleton.leaderBoardId, GameManager.singleton.username, jsonData, GameManager.singleton.timer);
+            LeaderboardsSample.singleton.AddScoreWithMetadata(GameManager.singleton.leaderBoardId, PlayerPrefs.GetString("username"), jsonData, GameManager.singleton.timer);
         }
     }
 }
