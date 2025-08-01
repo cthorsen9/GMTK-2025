@@ -68,7 +68,6 @@ public class LeaderboardsSample : MonoBehaviour
     public class ScoreMetadata
     {
 
-        //public string jsonGhostData;
         public string username;
     }
 
@@ -77,7 +76,7 @@ public class LeaderboardsSample : MonoBehaviour
 
         int utf16ByteCount = Encoding.Unicode.GetByteCount(jsonData);
         Debug.Log(utf16ByteCount);
-        var scoreMetadata = new ScoreMetadata { /*jsonGhostData = jsonData,*/ level = SceneManager.GetActiveScene().name, username = user };
+        var scoreMetadata = new ScoreMetadata {  username = user };
         var playerEntry = await LeaderboardsService.Instance
             .AddPlayerScoreAsync(
                 leaderboardId,
