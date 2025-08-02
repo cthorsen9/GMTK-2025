@@ -105,6 +105,7 @@ public class GameManager : MonoBehaviour
 
         cineCont.enabled = false;
 
+        if(MusicMaster.singleton != null) MusicMaster.singleton.rb = pRigid;
 
         SetupLevel();
 
@@ -144,9 +145,9 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (timePlayer) speedText.text = pRigid.linearVelocity.magnitude.ToString("000.0");
+        if (timePlayer) speedText.text = pRigid.linearVelocity.magnitude.ToString("00.0");
 
-        if ((int)pRigid.linearVelocity.magnitude - (int)prevFrameVelMag >= 1) velAnims.SetTrigger("velUp");
+        //if ((int)pRigid.linearVelocity.magnitude - (int)prevFrameVelMag >= 1) velAnims.SetTrigger("velUp");
 
         prevFrameVelMag = pRigid.linearVelocity.magnitude;
 

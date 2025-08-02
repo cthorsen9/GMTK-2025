@@ -124,7 +124,7 @@ Material:
     - _TopTextureTiling: 1.25
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _sideTextureTiling: 1.97
+    - _sideTextureTiling: 1.36
     - _thresh: 0.44
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}

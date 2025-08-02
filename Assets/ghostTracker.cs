@@ -46,7 +46,7 @@ public class ghostTracker : MonoBehaviour
 
         while (GameManager.singleton.timePlayer)
         {
-            Debug.Log("Tracking data");
+            //Debug.Log("Tracking data");
 
             
            // posList.Add(new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z));
@@ -56,7 +56,7 @@ public class ghostTracker : MonoBehaviour
         }
        // Debug.Log(PlayerPrefs.GetFloat(SceneManager.GetActiveScene().name));
 
-        Debug.Log(posList.Count);
+        //Debug.Log(posList.Count);
 
 
         if (useBestGhostData)
@@ -89,9 +89,13 @@ public class ghostTracker : MonoBehaviour
 
         PlayerPrefs.Save();
         onlineGhost = PlayerPrefs.GetInt("onlineGhost") == 0 ? false : true;
+
+        Debug.Log(onlineGhost);
         if (onlineGhost)
         {
-            LeaderboardsSample.singleton.AddScoreWithMetadata(GameManager.singleton.leaderBoardId, PlayerPrefs.GetString("username"), jsonData, GameManager.singleton.timer);
+            LeaderboardsSample.singleton.AddScoreWithMetadata(GameManager.singleton.leaderBoardId, PlayerPrefs.GetString("username"), GameManager.singleton.timer);
         }
+        //LeaderboardsSample.singleton.AddScoreWithMetadata(GameManager.singleton.leaderBoardId, PlayerPrefs.GetString("username"), GameManager.singleton.timer);
+
     }
 }

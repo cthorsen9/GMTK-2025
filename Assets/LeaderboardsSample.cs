@@ -24,15 +24,19 @@ public class LeaderboardsSample : MonoBehaviour
 
     public float lastScoreTime = -100f;
 
-    //public TMP_Text debugText;
+    public TMP_Text debugText;
 
 
     //once signed in
     public bool wereIn = false;
 
-
     private async void Awake()
     {
+#if UNITY_WEBGL
+        // Enable WebGL network features
+        Application.runInBackground = true;
+#endif
+
         if (singleton == null)
         {
             // First instance - become the singleton
@@ -48,10 +52,10 @@ public class LeaderboardsSample : MonoBehaviour
 
         await UnityServices.InitializeAsync();
         await SignInAnonymously();
-
-       
-
     }
+
+
+    
 
         async Task SignInAnonymously()
         {
@@ -89,26 +93,25 @@ public class LeaderboardsSample : MonoBehaviour
         public List<LeaderboardEntry> results; // List of all players
     }
 
-   [System.Serializable]
-    public class ScoreMetadata
-    {
-        public string username;
-    }
-
+   
     
 
 
-    public async void AddScoreWithMetadata(string leaderboardId, string user, string jsonData, float  time)
+    public async void AddScoreWithMetadata(string leaderboardId, string user, float  time)
     {
+        //debugText.text = (leaderboardId + user + time);
         await AuthenticationService.Instance.UpdatePlayerNameAsync(user).ContinueWith(task =>
         {
-            if (task.IsFaulted)
-                Debug.LogError("Failed to update player name: " + task.Exception);
+             //debugText.text = "Failed to update player name: " + task.Exception;
+            //Debug.LogError("Failed to update player name: " + task.Exception);
+
         });
 
-        int utf16ByteCount = Encoding.Unicode.GetByteCount(jsonData);
-        Debug.Log(utf16ByteCount);
-        var scoreMetadata = new ScoreMetadata {  username = user };
+
+
+        //int utf16ByteCount = Encoding.Unicode.GetByteCount(jsonData);
+       // Debug.Log(utf16ByteCount);
+        //var scoreMetadata = new ScoreMetadata {  username = user };
         //string metadataJson = JsonConvert.SerializeObject(scoreMetadata);
 
         // 3. Debug check
@@ -117,11 +120,7 @@ public class LeaderboardsSample : MonoBehaviour
         // 4. Submit with explicit metadata
         var playerEntry = await LeaderboardsService.Instance.AddPlayerScoreAsync(
             leaderboardId,
-            time,
-            new AddPlayerScoreOptions
-            {
-                Metadata = scoreMetadata // Pass the pre-serialized JSON string
-            }
+            time
         );
         //debugText.text = JsonConvert.SerializeObject(playerEntry);
 

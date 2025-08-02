@@ -8,6 +8,7 @@ public class WheelController : MonoBehaviour
 
     public Transform trackTarget;
 
+    [HideInInspector]
     public WheelCollider wCol;
 
     [SerializeField]
@@ -55,7 +56,8 @@ public class WheelController : MonoBehaviour
     //for matching slope
     RaycastHit hit;
 
-    float additionalZLean = 0f;
+    [SerializeField]
+    Transform moveSpeedCanv;
 
     //jump settings-----------------------------------------------
     public Rigidbody rigid;
@@ -161,7 +163,7 @@ public class WheelController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Physics.Raycast(transform.position, -transform.up, out hit, 1.5f, mask);
+        Physics.Raycast(transform.position, -transform.up, out hit, 2f, mask);
 
         
         
@@ -190,6 +192,8 @@ public class WheelController : MonoBehaviour
         if(wCol.isGrounded) wCol.motorTorque = input.y * forwardForce;
         wCol.steerAngle += input.x * turnAmount * Time.deltaTime;
         
+        
+
     }
 
     //compares grounded data to tell us when to jump
@@ -213,6 +217,8 @@ public class WheelController : MonoBehaviour
     void MeshUpdater()
     {
         wheelMesh.localEulerAngles = startAngle + wCol.steerAngle * Vector3.up + wCol.rotationSpeed * Time.time * rotModifier * Vector3.right;
+
+        moveSpeedCanv.localEulerAngles = wCol.steerAngle * Vector3.up;
     }
 
     void UpdateLean()

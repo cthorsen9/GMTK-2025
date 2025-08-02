@@ -45,7 +45,9 @@ public class GhostMovement : MonoBehaviour
     {
         jsonData = PlayerPrefs.GetString(SceneManager.GetActiveScene().name + "json");
 
-        if (jsonData == "{}") gameObject.SetActive(false);
+        Debug.Log(jsonData);
+
+        if (jsonData == "") gameObject.SetActive(false);
         else
         {
             data = JsonUtility.FromJson<PositionData>(jsonData);
