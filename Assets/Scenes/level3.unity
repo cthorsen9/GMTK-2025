@@ -759,7 +759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playedIntro: 0
-  TimeToBeat: 43
+  TimeToBeat: 58
 --- !u!4 &222384964
 Transform:
   m_ObjectHideFlags: 0
