@@ -615,25 +615,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &250741627 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 862515109823937868, guid: b7f9cd28239a7ae4a9f2755a3c4f523e, type: 3}
-  m_PrefabInstance: {fileID: 4236520507503060690}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &250741631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 250741627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c45a93e0e73b2848bff6eac84bcbe75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  useBestGhostData: 1
-  captureEveryXseconds: 0.05
 --- !u!1001 &297212202
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3649,7 +3630,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1287743544}
   leaderBoardId: LevelTimeLeaderBoards
-  ghostTracker_: {fileID: 250741631}
+  ghostTracker_: {fileID: 0}
   ghost: {fileID: 220894884}
   controller: {fileID: 1855049334}
   pRigid: {fileID: 1287743546}
@@ -12376,10 +12357,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 862515109823937868, guid: b7f9cd28239a7ae4a9f2755a3c4f523e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 250741631}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7f9cd28239a7ae4a9f2755a3c4f523e, type: 3}
 --- !u!4 &4236520507503060691 stripped
 Transform:

@@ -108,6 +108,11 @@ public class WheelController : MonoBehaviour
     [SerializeField]
     GameObject thudSound;
 
+    [SerializeField]
+    GameObject jumpSound;
+
+
+
 
     public void MoveInput(InputAction.CallbackContext context)
     {
@@ -303,6 +308,9 @@ public class WheelController : MonoBehaviour
     {
         anim.SetTrigger("endJump");
         float jumpForce = Mathf.Clamp(Time.time - jumpStartTime, 0, TimeForMaxPower);
+
+        Instantiate<GameObject>(jumpSound, transform.position, Quaternion.identity);
+
 
         jumpForce /= TimeForMaxPower;
 

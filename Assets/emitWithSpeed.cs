@@ -31,12 +31,22 @@ public class emitWithSpeed : MonoBehaviour
 
     ChromaticAberration chrom;
 
+    AudioSource rollin;
+
+    float rollinMaxVol = .8f;
+
+    float minRollVol = .6f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         part = GetComponent<ParticleSystem>();
 
         pp.profile.TryGet<ChromaticAberration>(out chrom);
+
+        rollin = GetComponent<AudioSource>();
+
+       // rollinMaxVol = rollin.volume;
 
         StartCoroutine(FakeUpdate());
 
@@ -54,12 +64,15 @@ public class emitWithSpeed : MonoBehaviour
             if (!wCol.isGrounded)
             {
                 emission.rateOverTime = 0;
+                rollin.volume = 0;
             }
             else
             {
                 velMag = Mathf.Clamp(rigid.linearVelocity.magnitude, 0, topSpeed);
 
                 velMag /= topSpeed;
+
+                rollin.volume = rollinMaxVol * velMag;
 
 
                 emission.rateOverTime = Mathf.Lerp(0f, topEmit, velMag);
