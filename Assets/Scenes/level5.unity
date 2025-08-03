@@ -1396,7 +1396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playedIntro: 0
-  TimeToBeat: 46
+  TimeToBeat: 43
 --- !u!4 &222384964
 Transform:
   m_ObjectHideFlags: 0
@@ -8244,18 +8244,18 @@ MonoBehaviour:
   Radius: 10
   Orbits:
     Top:
-      Radius: -0.46
+      Radius: 0.44
       Height: 2.53
     Center:
       Radius: 2.29
       Height: 2.25
     Bottom:
       Radius: 1.06
-      Height: -0.35
+      Height: 0
     SplineCurvature: 0.5
   RecenteringTarget: 2
   HorizontalAxis:
-    Value: 0
+    Value: -6.925805
     Center: 0
     Range: {x: -180, y: 180}
     Wrap: 1
@@ -8265,7 +8265,7 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   VerticalAxis:
-    Value: 6
+    Value: -10
     Center: 17.5
     Range: {x: -10, y: 45}
     Wrap: 0
@@ -8335,8 +8335,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 600978370}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.25137752, y: -0.000000006970134, z: 0.0000000018102666, w: 0.9678892}
-  m_LocalPosition: {x: 449.6476, y: 386.20023, z: -611.0584}
+  m_LocalRotation: {x: -0.000000025269856, y: -0.06039805, z: -5.5820315e-10, w: 0.9981744}
+  m_LocalPosition: {x: 449.77542, y: 385.009, z: -609.97205}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23347,7 +23347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5726765959450849278, guid: c39ea5f5cd7a25247a800a8247192a37, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 190.6
+      value: 163.3
       objectReference: {fileID: 0}
     - target: {fileID: 5726765959450849278, guid: c39ea5f5cd7a25247a800a8247192a37, type: 3}
       propertyPath: m_LocalPosition.z
