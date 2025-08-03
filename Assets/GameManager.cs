@@ -299,6 +299,7 @@ public class GameManager : MonoBehaviour
 
     public void NextLevel()
     {
+        Time.timeScale = 1;
         Destroy(SceneInfoHolder.singleton.gameObject);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex +1);
@@ -307,11 +308,13 @@ public class GameManager : MonoBehaviour
 
     public void Retry()
     {
+        Time.timeScale = 1;
         RestartLevel();
     }
 
     public void ToMenu()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
 
