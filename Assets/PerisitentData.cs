@@ -16,8 +16,8 @@ public class PerisitentData : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        PlayerPrefs.SetFloat("volumeLevel", 1f);
-        PlayerPrefs.Save();
+        //PlayerPrefs.SetFloat("volumeLevel", 1f);
+        //PlayerPrefs.Save();
         if (singleton == null)
         {
             // First instance - become the singleton
