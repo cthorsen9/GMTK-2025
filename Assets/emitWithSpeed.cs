@@ -18,6 +18,12 @@ public class emitWithSpeed : MonoBehaviour
     float topEmit = 80f;
 
     [SerializeField]
+    bool triggerOverxSpeed = false;
+
+    [SerializeField]
+    float minSpeed = 70f;
+
+    [SerializeField]
     Rigidbody rigid;
 
     float velMag;
@@ -33,16 +39,16 @@ public class emitWithSpeed : MonoBehaviour
 
     AudioSource rollin;
 
-    float rollinMaxVol = .8f;
+    float rollinMaxVol = .6f;
 
-    float minRollVol = .6f;
+    //float minRollVol = .6f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         part = GetComponent<ParticleSystem>();
 
-        pp.profile.TryGet<ChromaticAberration>(out chrom);
+        if(!triggerOverxSpeed ) pp.profile.TryGet<ChromaticAberration>(out chrom);
 
         rollin = GetComponent<AudioSource>();
 
@@ -58,27 +64,42 @@ public class emitWithSpeed : MonoBehaviour
     {
         while (true)
         {
-           
-            var emission = part.emission;
 
-            if (!wCol.isGrounded)
+            if (triggerOverxSpeed)
             {
-                emission.rateOverTime = 0;
-                rollin.volume = 0;
+                if(rigid.linearVelocity.magnitude > minSpeed && !part.isPlaying) part.Play();
+                else if(rigid.linearVelocity.magnitude < minSpeed && part.isPlaying) part.Stop();   
+                
             }
+
             else
             {
-                velMag = Mathf.Clamp(rigid.linearVelocity.magnitude, 0, topSpeed);
+                var emission = part.emission;
 
-                velMag /= topSpeed;
+                if (!wCol.isGrounded)
+                {
+                    emission.rateOverTime = 0;
+                    rollin.volume = 0;
+                }
+                else
+                {
+                    velMag = Mathf.Clamp(rigid.linearVelocity.magnitude, 0, topSpeed);
 
-                rollin.volume = rollinMaxVol * velMag;
+                    velMag /= topSpeed;
+
+                    rollin.volume = rollinMaxVol * velMag;
 
 
-                emission.rateOverTime = Mathf.Lerp(0f, topEmit, velMag);
+                    emission.rateOverTime = Mathf.Lerp(0f, topEmit, velMag);
+                }
+
+                if (pp != null) chrom.intensity.Override(velMag);
+
+
+
             }
 
-            chrom.intensity.Override(velMag);
+               
 
 
             yield return new WaitForSeconds(loopFreq);

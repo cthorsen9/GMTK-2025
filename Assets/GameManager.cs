@@ -225,8 +225,10 @@ public class GameManager : MonoBehaviour
         timer = 0f;
         timePlayer = true; 
         
+        
         ghostTracker_.StartTracking();
-        ghost.StartGhost();
+
+        if(ghost.gameObject.activeSelf) ghost.StartGhost();
     }
 
     void UpdateTimer()
