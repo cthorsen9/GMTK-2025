@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        Cursor.lockState =  CursorLockMode.Locked;
         //DontDestroyOnLoad(gameObject);
 
         if (singleton != null && singleton != this.gameObject)
@@ -255,7 +256,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            pRigid.Move(checkpoint.position, checkpoint.rotation);
+            pRigid.Move(checkpoint.position, Quaternion.identity);
             pRigid.linearVelocity = Vector3.zero;
             pRigid.angularVelocity = Vector3.zero;
         }
@@ -277,6 +278,9 @@ public class GameManager : MonoBehaviour
         playerFinsihed = true;
 
         cineCont.enabled = false;
+
+        Cursor.lockState = CursorLockMode.None;
+
 
         Debug.Log(levelBest + " <level best, time to beat> " + SceneInfoHolder.singleton.TimeToBeat);
 
@@ -316,12 +320,16 @@ public class GameManager : MonoBehaviour
     {
         if (paused)
         {
+            Cursor.lockState = CursorLockMode.Locked;
+
             paused = false;
             Time.timeScale = 1;
             pauseUI.SetActive(false);
         }
         else
         {
+            Cursor.lockState = CursorLockMode.None;
+
             paused = true;
             Time.timeScale = 0;
             pauseUI.SetActive(true);

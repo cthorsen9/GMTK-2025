@@ -50,10 +50,12 @@ public class MusicMaster : MonoBehaviour
         }
 
 
+
         activeTrack = Random.Range(0, mc.Count);
 
 
         mc[activeTrack].gameObject.SetActive(true);
+        topVolume = mc[activeTrack].ambience.volume;
     }
 
     
@@ -73,8 +75,8 @@ public class MusicMaster : MonoBehaviour
 
         bassCalc /= topSpeedBass;
 
-        mc[activeTrack].drums.volume = drumCalc;
-        mc[activeTrack].bass.volume = bassCalc;
+        mc[activeTrack].drums.volume = drumCalc * topVolume;
+        mc[activeTrack].bass.volume = bassCalc * topVolume;
         
 
     }

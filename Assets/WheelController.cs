@@ -105,6 +105,8 @@ public class WheelController : MonoBehaviour
 
     Coroutine jumpForgiveness_;
 
+    [SerializeField]
+    GameObject thudSound;
 
 
     public void MoveInput(InputAction.CallbackContext context)
@@ -209,6 +211,11 @@ public class WheelController : MonoBehaviour
         {
             if (coyoteTimer_ != null) StopCoroutine(coyoteTimer_);
             coyoteTimer_ = StartCoroutine(CoyoteTimer());
+        }
+
+        if(!groundedLastFrame && wCol.isGrounded)
+        {
+            Instantiate<GameObject>(thudSound, transform.position, Quaternion.identity);
         }
     }
 

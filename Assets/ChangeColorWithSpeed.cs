@@ -21,9 +21,18 @@ public class ChangeColorWithSpeed : MonoBehaviour
     [SerializeField]
     Rigidbody rigid;
 
+    [SerializeField]    
+    bool audio;
+
+    AudioSource source;
+
+    [SerializeField]
+    float maxVolume = .6f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if(audio) source = GetComponent<AudioSource>();
         StartCoroutine(fakeUpdate());
     }
 
@@ -36,7 +45,12 @@ public class ChangeColorWithSpeed : MonoBehaviour
             velMag /= topSpeed;
 
 
-            text.color = gradient.Evaluate(velMag);
+            if (audio)
+            {
+                source.volume = velMag * maxVolume;
+            }
+
+            else text.color = gradient.Evaluate(velMag);
 
             yield return new WaitForSeconds(updateFreq);
         }

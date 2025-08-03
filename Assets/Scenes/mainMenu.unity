@@ -5117,7 +5117,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: d10ccad0e65b39e47aa0bece44efb34f, type: 3}
   m_Resource: {fileID: 8300000, guid: d10ccad0e65b39e47aa0bece44efb34f, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.678
+  m_Volume: 0.287
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -6654,8 +6654,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ambience: {fileID: 141735469}
-  drums: {fileID: 1140230914}
-  bass: {fileID: 1419193683}
+  drums: {fileID: 1419193683}
+  bass: {fileID: 1140230914}
 --- !u!1 &422628144
 GameObject:
   m_ObjectHideFlags: 0
@@ -13395,7 +13395,7 @@ MonoBehaviour:
   mc:
   - {fileID: 398671019}
   topSpeedDrums: 100
-  minSpeedDrums: 30
+  minSpeedDrums: 20
   topSpeedBass: 80
 --- !u!1 &1985609819
 GameObject:
