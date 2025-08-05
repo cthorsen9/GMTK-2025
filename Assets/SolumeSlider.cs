@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class SolumeSlider : MonoBehaviour
@@ -16,6 +17,9 @@ public class SolumeSlider : MonoBehaviour
 
     void setupVolume()
     {
+        if (PlayerPrefs.GetFloat("level1") == 0 && SceneManager.GetActiveScene().buildIndex ==0) { PlayerPrefs.SetFloat("volumeLevel", .8f); PlayerPrefs.Save(); AudioListener.volume = .8f; }
+
+
         slider.value = PlayerPrefs.GetFloat("volumeLevel");
         
     }

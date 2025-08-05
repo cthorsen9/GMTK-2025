@@ -283,6 +283,7 @@ public class GameManager : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
 
+        if(PlayerPrefs.GetInt("levelsBeaten") < SceneManager.GetActiveScene().buildIndex) { PlayerPrefs.SetInt("levelsBeaten", SceneManager.GetActiveScene().buildIndex - 1); }
 
         Debug.Log(levelBest + " <level best, time to beat> " + SceneInfoHolder.singleton.TimeToBeat);
 
