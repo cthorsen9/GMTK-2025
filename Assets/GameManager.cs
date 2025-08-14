@@ -203,12 +203,15 @@ public class GameManager : MonoBehaviour
     IEnumerator CountDown()
     {
         cineCont.enabled = true;
-
-        for (int i = 0; i < countdownTime; i++)
+        if (!SceneInfoHolder.singleton.playedIntro)
         {
-            countdown.text = (countdownTime - i ).ToString();
-            yield return new WaitForSeconds(1);
+            for (int i = 0; i < countdownTime; i++)
+            {
+                countdown.text = (countdownTime - i).ToString();
+                yield return new WaitForSeconds(1);
+            }
         }
+
         pRigid.isKinematic = false; 
         controller.enabled = true;
 
@@ -317,6 +320,7 @@ public class GameManager : MonoBehaviour
 
     public void ToMenu()
     {
+        Destroy(SceneInfoHolder.singleton.gameObject);
         Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
