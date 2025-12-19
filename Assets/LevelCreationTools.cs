@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
+using UnityEngine.UI;
 
 public class LevelCreationTools : MonoBehaviour
 {
@@ -18,7 +19,6 @@ public class LevelCreationTools : MonoBehaviour
 
     [SerializeField]
     List<GameObject> toDisable = new List<GameObject>();
-
 
 
     private void Start()
@@ -53,6 +53,7 @@ public class LevelCreationTools : MonoBehaviour
         {
             go.SetActive(true);
         }
+        
     }
 
     public void SwitchActivePropSection(GameObject newActiveWindow)
