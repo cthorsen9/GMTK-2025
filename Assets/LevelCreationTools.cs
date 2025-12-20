@@ -1,16 +1,25 @@
-using System.Collections.Generic;
-using UnityEngine;
 using NaughtyAttributes;
+using System.Collections.Generic;
+using UnityEditor.PackageManager.UI;
+using UnityEngine;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// lowkenuinely confusing naming nbut this is for the UI setup, and levelEditorTools is for actual tool behavior
+/// </summary>
 public class LevelCreationTools : MonoBehaviour
 {
     public static LevelCreationTools singleton;
 
-    Transform camTrans;
 
-
+    [Tooltip("the prop window/folder we have open")]
     public GameObject activePropSection;
+
+
+    [SerializeField]
+    [Tooltip("The game view window")]
+    RectTransform window;
 
 
     [Header("Scene Init settings")]
@@ -32,7 +41,6 @@ public class LevelCreationTools : MonoBehaviour
         }
         singleton = this;
 
-        camTrans = Camera.main.transform;
 
         foreach (GameObject go in toDisableImmediately)
         {
@@ -92,6 +100,13 @@ public class LevelCreationTools : MonoBehaviour
             newActiveWindow.SetActive(true);
             activePropSection = newActiveWindow;
         }
+    }
+
+
+    public bool InGameViewBounds()
+    {
+        Vector2 mPos = Input.mousePosition;
+        return RectTransformUtility.RectangleContainsScreenPoint(window, mPos);
     }
 
 }

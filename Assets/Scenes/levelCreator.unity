@@ -741,7 +741,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0, g: 0, b: 0, a: 1}
     m_HighlightedColor: {r: 1, g: 0.9319989, b: 0.8132075, a: 1}
     m_PressedColor: {r: 0.9490196, g: 0.8509804, b: 0.7019608, a: 1}
     m_SelectedColor: {r: 0.8039216, g: 0.8039216, b: 0.8039216, a: 1}
@@ -1649,7 +1649,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 174311956}
   - {fileID: 1501545895}
   - {fileID: 1452447346}
   - {fileID: 1152155527}
@@ -1657,6 +1656,7 @@ RectTransform:
   - {fileID: 1698116444}
   - {fileID: 990197040}
   - {fileID: 1640770373}
+  - {fileID: 174311956}
   m_Father: {fileID: 682787978}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -2145,7 +2145,19 @@ MonoBehaviour:
     m_ActionId: 351f2ccd-1f9f-44bf-9bec-d62ac5c5f408
     m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1331450302}
+        m_TargetAssemblyTypeName: LevelCreatorController, Assembly-CSharp
+        m_MethodName: LookInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 6b444451-8a00-4d00-a97e-f47457f736a8
     m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
   - m_PersistentCalls:
@@ -2284,6 +2296,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0a24b48d-3f9a-4f1b-88aa-ce3cf315b5bc
     m_ActionName: 'Player/VertMove[/Keyboard/q,/Keyboard/e]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1331450302}
+        m_TargetAssemblyTypeName: LevelCreatorController, Assembly-CSharp
+        m_MethodName: SpeedUpInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9f5a6038-66da-4364-9b31-5d29ef04e758
+    m_ActionName: 'Player/SpeedUp[/Keyboard/shift]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1331450303}
+        m_TargetAssemblyTypeName: LevelEditorTools, Assembly-CSharp
+        m_MethodName: Click
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 13f889e8-a3f1-4e83-a180-bc78cae15c55
+    m_ActionName: 'Player/LClick[/Mouse/leftButton]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -4374,6 +4418,7 @@ GameObject:
   - component: {fileID: 1331450301}
   - component: {fileID: 1331450300}
   - component: {fileID: 1331450302}
+  - component: {fileID: 1331450303}
   m_Layer: 0
   m_Name: LevelCreation
   m_TagString: Untagged
@@ -4394,6 +4439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelCreationTools
   activePropSection: {fileID: 333613369}
+  window: {fileID: 350373641}
   toEnableOnTest:
   - {fileID: 453921688}
   toDisableImmediately:
@@ -4432,10 +4478,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c74d237799a7ef642a2e25d79d88e7d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  window: {fileID: 350373641}
   moveSpeed: 1
   vertSpeed: 1
+  lookSens: 5
+  accelerationRatePerSec: 1.15
+  maxVelocity: 100
+  accelStartBoost: 3
   cam: {fileID: 1159170528}
+--- !u!114 &1331450303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331450299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973a66e02ce56874cb973789a1ecc323, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  minTime: 0.2
 --- !u!1001 &1359193905
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4989,7 +5051,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -138.16, y: 482.4498}
+  m_AnchoredPosition: {x: -138.16, y: 482.35242}
   m_SizeDelta: {x: 302.3, y: 1558}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1480653350
@@ -6906,8 +6968,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1533735619}
   m_HandleRect: {fileID: 1533735618}
   m_Direction: 2
-  m_Value: 1.0000004
-  m_Size: 0.6193147
+  m_Value: 1.0001646
+  m_Size: 0.6168629
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

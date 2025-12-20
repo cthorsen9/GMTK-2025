@@ -1,15 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 public class LevelCreatorController : MonoBehaviour
 {
 
     bool rightClickHeld = false;
 
-    [SerializeField]
-    [Tooltip("The game view window")]
-    RectTransform window;
 
 
     Vector2 horiData = new Vector2();
@@ -26,9 +22,58 @@ public class LevelCreatorController : MonoBehaviour
     [SerializeField]
     float vertSpeed = 1f;
 
+    [SerializeField]
+    float lookSens = 1f;
+
+    [Space]
+    [Header("Acceleration settings")]
+    [SerializeField]
+    float accelerationRatePerSec = 1.1f;
+
+    [SerializeField]
+    float maxVelocity = 50f;
+
+    [SerializeField]
+    float accelStartBoost = 3f;
+
+    float accelerator = 1f;
+
+    float accelTimer = 0f;
+
+    bool shouldAccelerate;
+    
+
+    //look settings
+    Vector2 lookInput;
+
+    float yaw;
+
+    float pitch;
+
+
 
     [SerializeField]
     Camera cam;
+
+
+    public void SpeedUpInput(InputAction.CallbackContext context)
+    {
+        if (!rightClickHeld) return;
+
+        if (context.started)
+        {
+            accelerator = 1f;
+            shouldAccelerate = true;
+
+
+        }
+        if (context.canceled)
+        {
+            shouldAccelerate = false;
+            accelerator = 1f;
+            accelTimer = 0f;
+        }
+    }
 
     public void HorizontalMove(InputAction.CallbackContext context)
     {
@@ -42,8 +87,14 @@ public class LevelCreatorController : MonoBehaviour
         horiData.Normalize();
         
 
-        
+    }
 
+    public void LookInput(InputAction.CallbackContext context)
+    {
+        if (!rightClickHeld) return;
+
+
+        lookInput = context.ReadValue<Vector2>();
     }
 
     public void VerticalMove(InputAction.CallbackContext context)
@@ -62,10 +113,11 @@ public class LevelCreatorController : MonoBehaviour
     {
         if (context.started)
         {
-            Vector2 mPos = Input.mousePosition;
-            
-            if (RectTransformUtility.RectangleContainsScreenPoint(window, mPos))
+                        
+            if (LevelCreationTools.singleton.InGameViewBounds())
             {
+                yaw = cam.transform.localRotation.eulerAngles.y;
+                pitch = cam.transform.localRotation.eulerAngles.x;
                 UnityEngine.Cursor.lockState = CursorLockMode.Locked;
                 rightClickHeld = true;
             }
@@ -88,6 +140,9 @@ public class LevelCreatorController : MonoBehaviour
         Debug.Log(horiData + " " + vertMove);
 
         Look();
+
+        if(shouldAccelerate) SpeedUp();
+
         Move();
        
     }
@@ -96,10 +151,12 @@ public class LevelCreatorController : MonoBehaviour
     void Move()
     {
         
-        horiCopy = horiData * moveSpeed * Time.deltaTime;
-        moveVect = new Vector3(horiCopy.x, vertMove * vertSpeed * Time.deltaTime, horiCopy.y);
+        horiCopy = horiData * moveSpeed * Time.deltaTime * accelerator;
 
-        
+        moveVect = cam.transform.InverseTransformDirection(moveVect);
+
+        moveVect = new Vector3(horiCopy.x, vertMove * vertSpeed * Time.deltaTime * accelerator, horiCopy.y);
+
 
         cam.transform.Translate(moveVect);
     }
@@ -107,8 +164,19 @@ public class LevelCreatorController : MonoBehaviour
     //mouse look if rclick held
     void Look()
     {
+        yaw += lookInput.x * lookSens * Time.deltaTime;
+        pitch -= lookInput.y * lookSens * Time.deltaTime;
 
+        pitch = Mathf.Clamp(pitch, -89f, 89f);
+
+        cam.transform.localRotation = Quaternion.Euler(pitch, yaw, 0f);
     }
 
+    public void SpeedUp()
+    {
+        accelTimer += Time.deltaTime;   
+        accelerator = accelerationRatePerSec * accelTimer + accelStartBoost;
+        accelerator = Mathf.Clamp(accelerator, 0f, maxVelocity);
+    }
 
 }
