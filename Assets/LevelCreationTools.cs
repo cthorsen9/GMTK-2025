@@ -15,10 +15,13 @@ public class LevelCreationTools : MonoBehaviour
 
     [Header("Scene Init settings")]
     [SerializeField]
-    List<GameObject> toEnable = new List<GameObject>();
+    List<GameObject> toEnableOnTest = new List<GameObject>();
 
     [SerializeField]
-    List<GameObject> toDisable = new List<GameObject>();
+    List<GameObject> toDisableImmediately = new List<GameObject>();
+
+    [SerializeField]
+    List<GameObject> toDisableOnTest = new List<GameObject>();
 
 
     private void Start()
@@ -31,7 +34,7 @@ public class LevelCreationTools : MonoBehaviour
 
         camTrans = Camera.main.transform;
 
-        foreach (GameObject go in toDisable)
+        foreach (GameObject go in toDisableImmediately)
         {
             go.SetActive(false);
         }
@@ -45,16 +48,39 @@ public class LevelCreationTools : MonoBehaviour
     [Button]
     public void TestGame()
     {
-        foreach(GameObject go in toDisable)
+        foreach(GameObject go in toDisableImmediately)
         {
             go.SetActive(true);
         }
-        foreach (GameObject go in toEnable)
+        foreach (GameObject go in toEnableOnTest)
         {
             go.SetActive(true);
         }
-        
+        foreach (GameObject go in toDisableOnTest)
+        {
+            go.SetActive(false);
+        }
+
     }
+
+    [Button]
+    public void StopTest()
+    {
+        foreach (GameObject go in toDisableImmediately)
+        {
+            go.SetActive(false);
+        }
+        foreach (GameObject go in toEnableOnTest)
+        {
+            go.SetActive(false);
+        }
+        foreach (GameObject go in toDisableOnTest)
+        {
+            go.SetActive(true);
+        }
+
+    }
+
 
     public void SwitchActivePropSection(GameObject newActiveWindow)
     {

@@ -328,6 +328,8 @@ public class GameManager : MonoBehaviour
 
     public void PauseUnpause()
     {
+        if (!gameObject.activeSelf) return;
+
         if (paused)
         {
             Cursor.lockState = CursorLockMode.Locked;
