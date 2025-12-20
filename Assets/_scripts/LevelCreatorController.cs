@@ -55,6 +55,22 @@ public class LevelCreatorController : MonoBehaviour
     [SerializeField]
     Camera cam;
 
+    Vector3 initalCamPos;
+
+    Quaternion initalRot;
+
+    private void Start()
+    {
+        initalCamPos = cam.transform.position;
+        initalRot = cam.transform.rotation; 
+    }
+
+    private void OnEnable()
+    {
+        cam.transform.SetPositionAndRotation(initalCamPos, initalRot);  
+    }
+
+
 
     public void SpeedUpInput(InputAction.CallbackContext context)
     {
@@ -109,6 +125,7 @@ public class LevelCreatorController : MonoBehaviour
     }
 
 
+    //determines if we can move;
     public void RightClick(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -116,10 +133,23 @@ public class LevelCreatorController : MonoBehaviour
                         
             if (LevelCreationTools.singleton.InGameViewBounds())
             {
+                //first reset our movement stuff, cuz it never got canceled
                 yaw = cam.transform.localRotation.eulerAngles.y;
                 pitch = cam.transform.localRotation.eulerAngles.x;
+
+                vertMove = 0f;
+                horiData = Vector2.zero;
+
+                shouldAccelerate = false;
+                accelerator = 1f;
+                accelTimer = 0f;
+
+                lookInput = Vector2.zero;
+
+
                 UnityEngine.Cursor.lockState = CursorLockMode.Locked;
                 rightClickHeld = true;
+
             }
 
         }

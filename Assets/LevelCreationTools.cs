@@ -74,6 +74,8 @@ public class LevelCreationTools : MonoBehaviour
     [Button]
     public void StopTest()
     {
+        if(Time.timeScale < 1) GameManager.singleton.PauseUnpause();
+
         foreach (GameObject go in toDisableImmediately)
         {
             go.SetActive(false);
@@ -87,6 +89,7 @@ public class LevelCreationTools : MonoBehaviour
             go.SetActive(true);
         }
 
+        
     }
 
 
