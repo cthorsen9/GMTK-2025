@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -19,8 +19,10 @@ public class LevelEditorTools : MonoBehaviour
 
     public RenderingLayerMask initialRLM;
 
+    public LayerMask gizmoMask;
+
     //did we click on a gizmo
-    bool onGizmo;
+    public bool onGizmo;
 
     //save where we clicked from to draw a box!
     Vector2 initalClickPos;
@@ -29,6 +31,7 @@ public class LevelEditorTools : MonoBehaviour
     [SerializeField]
     float minTime = .2f;
 
+    
 
     float timer = 0f;
 
@@ -41,7 +44,14 @@ public class LevelEditorTools : MonoBehaviour
     [SerializeField]
     GameObject currentActiveGizmoParent;
 
+    [SerializeField]
+    float gizmoSens = .1f;
+
+    public Space currentGizmoSpace;
+
     LEGizmo gizmoScript;
+
+    Vector3 gizmoDirection;
 
     //the obj we just cliked, to converted to our selected object
     GameObject clickedObj;
@@ -61,7 +71,9 @@ public class LevelEditorTools : MonoBehaviour
     [SerializeField]
     RawImage raw;
 
-    
+
+    [SerializeField]
+    List<LEGizmo> posRotScale = new List<LEGizmo>();
 
 
     //need to know if click has been held as well!
@@ -71,27 +83,33 @@ public class LevelEditorTools : MonoBehaviour
     /// also should check if in the rect.
     /// </summary>
     /// <param name="context"></param>
+    /// 
     public void Click(InputAction.CallbackContext context)
     {
         //if we click outside of the window and aren't still figureing out our state, don't do nun
-        if (!LevelCreationTools.singleton.InGameViewBounds() && !clickOnce) return;
+        if (!LevelCreationTools.singleton.InGameViewBounds() && !clickHeld) return;
 
         //started runs each click
         if (context.started)
         {
+            if(gizmoScript!=null) gizmoScript.target = null;
             initalClickPos = Input.mousePosition;
 
             //need an inital check to see if our inital click was on a gizmo or not!, if not on a gizmo we draw a box.
-            TryGetWorldFromRenderTextureClick(out clickedObj);
+            if (TryGetWorldFromRenderTextureClick(out clickedObj)) TryGetWorldFromRenderTextureClick(out clickedObj, true);
+            
+            if (onGizmo) {
 
-            if (clickedObj != null) {
-                if (clickedObj.transform.parent != null)
+                if (clickedObj.transform.parent.TryGetComponent<LEGizmo>(out gizmoScript))
                 {
-                    if (clickedObj.transform.parent.TryGetComponent<LEGizmo>(out gizmoScript))
-                    {
-                        InteractWithGizmo();
-                        return;
-                    }
+
+                    Debug.Log("gotta da parente");
+                    gizmoDirection = gizmoScript.GetDirection(clickedObj.transform);
+                    gizmoScript.target = selectedObj.transform;
+                    clickHeld = true;
+                    //create our ctrl + z list here of what we change? -------- we need to know the previous state of what we selected,
+
+                    return;
                 }
                 
             }
@@ -115,6 +133,7 @@ public class LevelEditorTools : MonoBehaviour
 
             clickHeld = false;
             clickOnce= false;
+            onGizmo = false;    
         }
         
 
@@ -144,8 +163,12 @@ public class LevelEditorTools : MonoBehaviour
 
     private void LateUpdate()
     {
+        //this scales the gizmo to maintain size, not to be confused with the gizmo used to control the prefab scale
         ScaleGizmo();
     }
+
+
+
 
     //if canceled before mindays
     void SingleClick()
@@ -174,8 +197,87 @@ public class LevelEditorTools : MonoBehaviour
     //need a seperate system here for gizmo interaction, may be easy?
     void InteractWithGizmo()
     {
-        //fuhhhhhh we need to do a double raycast, one taht just shoots on the gizmo layer :OOOOOOOOOOOO
-        Debug.Log("touching gizmo!");
+        if(currentGizmo == activeGizmo.pos)
+        {
+            if (gizmoDirection.magnitude > 1f) Drag(true);
+            else Drag();
+        }
+        else if(currentGizmo == activeGizmo.rot)
+        {
+            Rotate();
+        }
+        else
+        {
+            Scale();
+        }
+        
+
+    }
+
+    void Drag()
+    {
+        Debug.Log("touching 1D gizmo! " + gizmoDirection);
+
+        if (currentGizmoSpace == Space.Self)
+            gizmoDirection = clickedObj.transform.parent.TransformDirection(gizmoDirection);
+
+        Vector3 worldPos = clickedObj.transform.parent.position;
+
+        Vector2 screenOrigin = cam.WorldToScreenPoint(worldPos);
+        Vector2 screenDir = ((Vector2)cam.WorldToScreenPoint(worldPos + gizmoDirection) - screenOrigin).normalized;
+
+        Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+
+        float amount = Vector2.Dot(mouseDelta, screenDir);
+
+        clickedObj.transform.parent.position += gizmoDirection * amount * gizmoSens;
+    }
+    void Drag(bool planar)
+    {
+        Vector3 axisA = Vector3.zero;
+        Vector3 axisB = Vector3.zero;
+
+        if (gizmoDirection.x != 0)
+            (axisA == Vector3.zero ? ref axisA : ref axisB) = Vector3.right;
+
+        if (gizmoDirection.y != 0)
+            (axisA == Vector3.zero ? ref axisA : ref axisB) = Vector3.up;
+
+        if (gizmoDirection.z != 0)
+            (axisA == Vector3.zero ? ref axisA : ref axisB) = Vector3.forward;
+
+        if (axisA == Vector3.zero || axisB == Vector3.zero)
+            return; // not actually a plane
+
+        if (currentGizmoSpace == Space.Self)
+        {
+            axisA = clickedObj.transform.parent.TransformDirection(axisA);
+            axisB = clickedObj.transform.parent.TransformDirection(axisB);
+        }
+
+        Vector3 worldPos = clickedObj.transform.parent.position;
+        Vector2 screenOrigin = cam.WorldToScreenPoint(worldPos);
+
+        Vector2 screenDirA = ((Vector2)cam.WorldToScreenPoint(worldPos + axisA) - screenOrigin).normalized;
+
+        Vector2 screenDirB = ((Vector2)cam.WorldToScreenPoint(worldPos + axisB) - screenOrigin).normalized;
+
+        Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+
+        float moveA = Vector2.Dot(mouseDelta, screenDirA);
+        float moveB = Vector2.Dot(mouseDelta, screenDirB);
+
+        clickedObj.transform.parent.position += axisA * moveA * gizmoSens + axisB * moveB * gizmoSens;
+    }
+
+    void Rotate()
+    {
+
+    }
+
+    void Scale()
+    {
+
     }
 
     void ScaleGizmo()
@@ -187,7 +289,7 @@ public class LevelEditorTools : MonoBehaviour
         currentActiveGizmoParent.transform.localScale = Vector3.one * scale;
     }
 
-    bool TryGetWorldFromRenderTextureClick(out GameObject hitObj)
+    bool TryGetWorldFromRenderTextureClick(out GameObject hitObj, bool gizcast = false)
     {
         Debug.Log("Running cast");
         hitObj = default;
@@ -195,7 +297,7 @@ public class LevelEditorTools : MonoBehaviour
         if (!RectTransformUtility.RectangleContainsScreenPoint(raw.rectTransform,initalClickPos))
             return false;
 
-        Debug.Log("Made it past the rect contains screenpt");
+        //Debug.Log("Made it past the rect contains screenpt");
 
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(raw.rectTransform, initalClickPos, null,out Vector2 local);
@@ -216,12 +318,65 @@ public class LevelEditorTools : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             hitObj = hit.collider.gameObject;
+            onGizmo = false;
+            if(!gizcast) return true;
+        }
+        if(gizcast && Physics.Raycast(ray, out RaycastHit hitta, 4000f, gizmoMask))
+        {
+            hitObj = hitta.collider.gameObject;
+            onGizmo = true;
             return true;
         }
-
-        return false;
+        onGizmo = false;
+        //if this code is running as gizcast, we already hit an obj, so if we didnt hit a agizmo default to our old obj
+        if(!gizcast) return false;
+        else
+        {
+            hitObj = clickedObj;
+            return false;
+        }
     }
 
 
 
+
+    //Button functions
+    public void ChangeGizmo(string toUse)
+    {
+        activeGizmo gizmo;
+
+        LEGizmo gizmoSc;
+
+        if (toUse == "pos")
+        {
+            gizmoSc = posRotScale[0];
+            gizmo = activeGizmo.pos;
+        }
+        if (toUse == "rot")
+        {
+            gizmoSc = posRotScale[1];
+            gizmo = activeGizmo.rot;
+        }
+        else
+        {
+            gizmoSc = posRotScale[2];
+            gizmo = activeGizmo.scale;
+        }
+
+        if(gizmoScript != null) gizmoScript.gameObject.SetActive(false);
+
+        gizmoScript = gizmoSc;
+
+        if (selectedObj != null)
+        {
+            Debug.Log("selected obj not null");
+            gizmoScript.transform.position = selectedObj.transform.position;
+
+            gizmoScript.target = selectedObj.transform;
+        }
+
+
+
+        currentGizmo = gizmo;
+    }
 }

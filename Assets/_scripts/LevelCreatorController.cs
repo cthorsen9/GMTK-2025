@@ -167,7 +167,7 @@ public class LevelCreatorController : MonoBehaviour
     {
         if (!rightClickHeld) return;
 
-        Debug.Log(horiData + " " + vertMove);
+        //Debug.Log(horiData + " " + vertMove);
 
         Look();
 
