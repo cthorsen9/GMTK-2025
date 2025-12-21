@@ -39,7 +39,7 @@ public class LevelEditorTools : MonoBehaviour
     //gizmo stuff!
 
 
-    activeGizmo currentGizmo;
+    activeGizmo currentGizmo = activeGizmo.pos;
 
     [SerializeField]
     GameObject currentActiveGizmoParent;
@@ -49,6 +49,7 @@ public class LevelEditorTools : MonoBehaviour
 
     public Space currentGizmoSpace;
 
+    [SerializeField]
     LEGizmo gizmoScript;
 
     Vector3 gizmoDirection;
@@ -349,21 +350,28 @@ public class LevelEditorTools : MonoBehaviour
 
         if (toUse == "pos")
         {
+            Debug.Log("switch to pos");
             gizmoSc = posRotScale[0];
             gizmo = activeGizmo.pos;
+            if (currentGizmo == gizmo) return;
+
         }
-        if (toUse == "rot")
+        else if (toUse == "rot")
         {
             gizmoSc = posRotScale[1];
             gizmo = activeGizmo.rot;
+            if (currentGizmo == gizmo) return;
+
         }
         else
         {
             gizmoSc = posRotScale[2];
             gizmo = activeGizmo.scale;
+            if (currentGizmo == gizmo) return;
+
         }
 
-        if(gizmoScript != null) gizmoScript.gameObject.SetActive(false);
+        gizmoScript.gameObject.SetActive(false);
 
         gizmoScript = gizmoSc;
 

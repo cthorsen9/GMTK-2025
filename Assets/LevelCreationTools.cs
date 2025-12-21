@@ -32,6 +32,12 @@ public class LevelCreationTools : MonoBehaviour
     [SerializeField]
     List<GameObject> toDisableOnTest = new List<GameObject>();
 
+    [SerializeField]
+    RenderTexture gameText;
+
+    [SerializeField]
+    RenderTexture editorText;
+
 
     private void Start()
     {
@@ -69,6 +75,7 @@ public class LevelCreationTools : MonoBehaviour
             go.SetActive(false);
         }
 
+        Camera.main.targetTexture = gameText;
     }
 
     [Button]
@@ -89,7 +96,8 @@ public class LevelCreationTools : MonoBehaviour
             go.SetActive(true);
         }
 
-        
+        Camera.main.targetTexture = editorText;
+
     }
 
 

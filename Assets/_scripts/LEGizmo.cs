@@ -14,6 +14,8 @@ public class LEGizmo : MonoBehaviour
 
     public Transform target;
 
+    
+
     public Vector3 GetDirection(Transform toUse)
     {
         if (toUse == x) return Vector3.right;

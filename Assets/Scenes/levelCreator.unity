@@ -1032,7 +1032,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: a43643f83f3b4c44f9bbd97125719061, type: 2}
+  m_Texture: {fileID: 8400000, guid: 3ba35d9fcf9cd2b4eb8a94f88829d0f7, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -1463,7 +1463,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c88a89b7e188b6247bb72689e4e71bc4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2229870222956650118, guid: c88a89b7e188b6247bb72689e4e71bc4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -4787,6 +4787,8 @@ MonoBehaviour:
   toDisableOnTest:
   - {fileID: 682787974}
   - {fileID: 1203292065}
+  gameText: {fileID: 8400000, guid: a43643f83f3b4c44f9bbd97125719061, type: 2}
+  editorText: {fileID: 8400000, guid: 3ba35d9fcf9cd2b4eb8a94f88829d0f7, type: 2}
 --- !u!4 &1331450301
 Transform:
   m_ObjectHideFlags: 0
@@ -4828,9 +4830,10 @@ MonoBehaviour:
   currentActiveGizmoParent: {fileID: 1947968629}
   gizmoSens: 0.1
   currentGizmoSpace: 0
+  gizmoScript: {fileID: 1947968631}
   scaleFactor: 0.05
   cam: {fileID: 1159170528}
-  rt: {fileID: 8400000, guid: a43643f83f3b4c44f9bbd97125719061, type: 2}
+  rt: {fileID: 8400000, guid: 3ba35d9fcf9cd2b4eb8a94f88829d0f7, type: 2}
   raw: {fileID: 350373642}
   posRotScale:
   - {fileID: 1947968631}
@@ -4920,6 +4923,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3921360418721090399, guid: d463cc07ec987ce4dad52ab9e4068699, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: 3ba35d9fcf9cd2b4eb8a94f88829d0f7, type: 2}
     - target: {fileID: 3974282099254334170, guid: d463cc07ec987ce4dad52ab9e4068699, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -5417,7 +5424,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -138.16, y: 482.44928}
+  m_AnchoredPosition: {x: -138.16, y: 482.45004}
   m_SizeDelta: {x: 302.3, y: 1558}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1480653350
@@ -8125,8 +8132,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1533735619}
   m_HandleRect: {fileID: 1533735618}
   m_Direction: 2
-  m_Value: 1.0000012
-  m_Size: 0.6193184
+  m_Value: 1
+  m_Size: 0.6192975
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
