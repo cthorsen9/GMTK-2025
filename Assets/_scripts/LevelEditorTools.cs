@@ -15,6 +15,8 @@ public class LevelEditorTools : MonoBehaviour
     //if less than minTime
     bool clickOnce;
 
+    Vector2 mouseDelta;
+
     public RenderingLayerMask rLM;
 
     public RenderingLayerMask initialRLM;
@@ -45,7 +47,12 @@ public class LevelEditorTools : MonoBehaviour
     GameObject currentActiveGizmoParent;
 
     [SerializeField]
-    float gizmoSens = .1f;
+    float gizmoPositionSens = .1f;
+
+    [SerializeField]
+    float gizmoRotationSens = 1;
+
+    Vector3 startRot;
 
     public Space currentGizmoSpace;
 
@@ -130,17 +137,23 @@ public class LevelEditorTools : MonoBehaviour
             {
                 SingleClick();
             }
-            else Debug.Log("Finished multi-select");
+            else //Debug.Log("Finished multi-select");
 
             clickHeld = false;
             clickOnce= false;
-            onGizmo = false;    
+            onGizmo = false;
+            startRot = Vector3.one * 1000f;
         }
         
 
         //if we cancel in the time before the hold time, we didn't hold
-        if(context.canceled) Debug.Log("canceled");
+        //if(context.canceled) Debug.Log("canceled");
 
+    }
+
+    public void MouseDelta(InputAction.CallbackContext context)
+    {
+        mouseDelta = context.ReadValue<Vector2>();
     }
 
 
@@ -174,7 +187,7 @@ public class LevelEditorTools : MonoBehaviour
     //if canceled before mindays
     void SingleClick()
     {
-        Debug.Log("Single click");
+        //Debug.Log("Single click");
 
         if(clickedObj == selectedObj) return;
 
@@ -205,6 +218,7 @@ public class LevelEditorTools : MonoBehaviour
         }
         else if(currentGizmo == activeGizmo.rot)
         {
+            //Debug.Log("rotating");
             Rotate();
         }
         else
@@ -227,11 +241,11 @@ public class LevelEditorTools : MonoBehaviour
         Vector2 screenOrigin = cam.WorldToScreenPoint(worldPos);
         Vector2 screenDir = ((Vector2)cam.WorldToScreenPoint(worldPos + gizmoDirection) - screenOrigin).normalized;
 
-        Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+        
 
         float amount = Vector2.Dot(mouseDelta, screenDir);
 
-        clickedObj.transform.parent.position += gizmoDirection * amount * gizmoSens;
+        clickedObj.transform.parent.position += gizmoDirection * amount * gizmoPositionSens;
     }
     void Drag(bool planar)
     {
@@ -263,22 +277,53 @@ public class LevelEditorTools : MonoBehaviour
 
         Vector2 screenDirB = ((Vector2)cam.WorldToScreenPoint(worldPos + axisB) - screenOrigin).normalized;
 
-        Vector2 mouseDelta = Mouse.current.delta.ReadValue();
 
         float moveA = Vector2.Dot(mouseDelta, screenDirA);
         float moveB = Vector2.Dot(mouseDelta, screenDirB);
 
-        clickedObj.transform.parent.position += axisA * moveA * gizmoSens + axisB * moveB * gizmoSens;
+        clickedObj.transform.parent.position += axisA * moveA * gizmoPositionSens + axisB * moveB * gizmoPositionSens;
     }
 
+    //WIP edit to actually rotate not move
     void Rotate()
     {
+        if(startRot == Vector3.one * 1000f) startRot = clickedObj.transform.localEulerAngles;
+        Debug.Log("touching 1D gizmo! " + gizmoDirection);
 
+        if (currentGizmoSpace == Space.Self)
+            gizmoDirection = clickedObj.transform.parent.TransformDirection(gizmoDirection);
+
+        Vector3 worldPos = clickedObj.transform.parent.position;
+
+        Vector2 screenOrigin = cam.WorldToScreenPoint(worldPos);
+        Vector2 screenDir = ((Vector2)cam.WorldToScreenPoint(worldPos + gizmoDirection) - screenOrigin).normalized;
+
+
+        float amount = Vector2.Dot(mouseDelta, screenDir);
+        //Debug.Log(amount + "<- amount, aadded amount -> " + (gizmoDirection * amount * gizmoRotationSens));
+
+        clickedObj.transform.parent.Rotate(startRot + gizmoDirection * amount * gizmoRotationSens);
+        
     }
 
+
+    //TODO - MAKE SCALE NOT MOVE
     void Scale()
     {
+        Debug.Log("touching 1D gizmo! " + gizmoDirection);
 
+        if (currentGizmoSpace == Space.Self)
+            gizmoDirection = clickedObj.transform.parent.TransformDirection(gizmoDirection);
+
+        Vector3 worldPos = clickedObj.transform.parent.position;
+
+        Vector2 screenOrigin = cam.WorldToScreenPoint(worldPos);
+        Vector2 screenDir = ((Vector2)cam.WorldToScreenPoint(worldPos + gizmoDirection) - screenOrigin).normalized;
+
+
+        float amount = Vector2.Dot(mouseDelta, screenDir);
+
+        clickedObj.transform.parent.position += gizmoDirection * amount * gizmoPositionSens;
     }
 
     void ScaleGizmo()
